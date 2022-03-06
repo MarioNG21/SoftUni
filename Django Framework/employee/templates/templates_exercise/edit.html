@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post" action="{% url 'create employee' %}">
+    {% csrf_token %}
+    {{ employee_form }}
+    <button>Save</button>
+</form>
+    <form method='post' action="{% url 'edit'%} employee.pk">
+        {{ employee }}
+    </form>
+
+</body>
+</html>

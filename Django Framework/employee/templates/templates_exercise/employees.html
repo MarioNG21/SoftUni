@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul>
+    {% for emp in employees %}
+        <li>
+            {{ emp.first_name }} ({{employee.project_set.all}})
+        </li>
+
+    {% endfor %}
+    <p>This are the projects:</p>
+    {% for project in projects %}
+        <li>
+            {{ project.name }}
+        </li>
+            <ul>
+                {% for employee in project.employees.all %}
+                    <li>
+                        {{ employee.first_name }}
+                    </li>
+
+                {% endfor %}
+            </ul>
+    {% endfor %}
+</ul>
+</body>
+</html>

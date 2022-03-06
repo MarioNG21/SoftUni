@@ -1,0 +1,48 @@
+{% extends 'base/base.html' %}
+
+
+{% block content %}
+
+    {% if not pet_photos %}
+        <h1 class='text-center'>No pet photos yet</h1>
+        <div class=" row d-flex justify-content-center align-content-center">
+            <!-- Button to Add a new Photo -->
+            <a href="{% url 'add photo' %}" class="btn btn-lg btn-secondary row align-self-baseline">Add Photo</a>
+        </div>
+
+    {% else %}
+        <h1 class='text-center'>All Pet Photos</h1>
+        <div class="container mb-5">
+            <div class="row mb-5">
+
+                {% for photo in pet_photos %}
+                    <div class="card ml-3 mb-3" style="width: 18rem;">
+                        <!-- Image -->
+                        <img src="{{ photo.photo.url }}"
+                             class="card-img-top" alt="Photo description">
+                        <div class="card-body">
+                            {% for pet in photo.tagged_pets.all %}
+                                {% if pet.date_of_birth.year %}
+                                    <h5 class="card-title">{{ pet.name }}, age: {{ pet.age }}</h5>
+                                {% else %}
+                                    <h5 class="card-title">{{ pet.name }}</h5>
+                                {% endif %}
+                            {% endfor %}
+                            <!-- First 30 chars from the description -->
+                            <p class="card-text">{{ pet.description|truncatechars:30 }}</p>
+                            <!-- Button to the Photo Details Page -->
+                            <a href="{% url 'photo_details' photo.pk %}" class="btn btn-primary">See details</a>
+
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    <!-- End Pet Photos -->
+
+{% endblock %}
+
+
+
+

@@ -1,0 +1,11 @@
+{% extends 'base/base.html' %}
+{% load filters %}
+{% block content %}
+    {% include 'includes/header.html' %}
+    <h1>{{ month | capitalize }}'s Challenge</h1>
+    {% if text %}
+        <h2>{{ text }}</h2>
+    {% else %}
+        <h2>Sorry there is no challenge this month</h2>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base/base.html' %}
+{% load filter %}
+{% load static %}
+{% block title %}
+    This Post Title
+{% endblock %}
+{% block css_files %}<link href="{% static 'post_detail.css' %}">
+{% endblock %}
+{% block content %}
+    <section id="summary">
+        <h2>{{ post.title }}</h2>
+        <article>
+            <img src="{{ post.image.url }}" alt="">
+            <address>By {{ post.author.full_name| capitalize }}</address>
+            <div>
+                Last update оn
+                <time>{{ post.date| date:'D d m Y' }}</time>
+            </div>
+        </article>
+        <main>
+            {{ post.content }}
+        </main>
+    </section>
+{% endblock %}

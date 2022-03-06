@@ -1,0 +1,11 @@
+{% extends 'base/base.html' %}
+{% load filters %}
+{% block content %}
+    <ul class="list-group">
+        {% for month in months %}
+            <li class="list-group-item">
+                <a href="{% url 'month_by_name' month=month.name %}">{{ month.name | capitalize }} </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+{% if request.user.is_authenticated %}
+<div style="margin-top:30px">
+    <form method="POST">
+        {% csrf_token %}
+        <p>Are you sure you want to log out?</p>
+        <button type="submit">Yes, log out</button>
+    </form>
+</div>
+{% else %}
+    <p>You are not logged in yet, do you want to log in ? <a href="{% url 'login' %}">Log In</a> </p>
+{% endif %}
+</body>
+</html>

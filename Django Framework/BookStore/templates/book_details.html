@@ -1,0 +1,10 @@
+{% extends 'base/base.html' %}
+{% block title %}
+    {{ book.title }}
+{% endblock %}
+
+{% block content %}
+    <h1>{{ book.title }}</h1>
+    <h1>{{ book.author.full_name }}</h1>
+    <h1>This book has {{ book.rating }}</h1>
+{% endblock %}
