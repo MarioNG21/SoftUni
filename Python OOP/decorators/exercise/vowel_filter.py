@@ -1,0 +1,28 @@
+import functools
+
+
+def is_vowel(ch):
+    return ch in 'eyuoai' + 'eyuoai'.upper()
+
+
+def vowel_filter(func):
+    @functools.wraps(func)
+    def wrapper():
+        result = func()
+        return [c for c in result if is_vowel(c)]
+
+    return wrapper
+
+
+@vowel_filter
+def get_letter():
+    return ['a', 'b', 'c', 'd', 'e', 'f']
+
+
+@vowel_filter
+def say_hi():
+    return "Hello, Mario"
+
+
+print(get_letter())
+print(say_hi())
