@@ -35,7 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'My_final_social_media_shop.auth_acc'
+    'My_final_social_media_shop.auth_acc',
+    'My_final_social_media_shop.marketplace'
 ]
 
 MIDDLEWARE = [
