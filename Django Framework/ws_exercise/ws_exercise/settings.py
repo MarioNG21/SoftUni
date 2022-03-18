@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ws_exercise.petstagram',
+    'ws_exercise.auth_accounts'
+
 ]
 
 MIDDLEWARE = [
@@ -74,8 +76,12 @@ WSGI_APPLICATION = 'ws_exercise.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'petstagram',
+        'USER': 'postgres',
+        'PASSWORD': 'mario123',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
