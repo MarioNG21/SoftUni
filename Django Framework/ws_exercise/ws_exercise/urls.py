@@ -1,34 +1,20 @@
-"""ws_exercise URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
-from ws_exercise.petstagram.views import home, show_dashboard, show_profile, show_photo_details, photo_like, \
-    create_profile, edit_profile, delete_profile, add_pet, edit_pet, delete_pet, add_photo, edit_photo
+from ws_exercise.petstagram.views import show_dashboard, show_profile, show_photo_details, photo_like, \
+    create_profile, edit_profile, delete_profile, add_pet, edit_pet, delete_pet, add_photo, edit_photo, HomeView
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
-                  path('', home, name='home'),
+                  path('', HomeView.as_view(), name='home'),
 
                   path('dashboard/', show_dashboard, name='dashboard'),
+                  path('accounts/', include('ws_exercise.auth_accounts.urls')),
 
                   path('profile/', show_profile, name='profile'),
-                  path('profile/create/', create_profile, name='create profile'),
+                  # path('profile/create/', create_profile, name='create profile'),
                   path('profile/edit/', edit_profile, name='edit profile'),
                   path('profile/delete/', delete_profile, name='delete profile'),
 

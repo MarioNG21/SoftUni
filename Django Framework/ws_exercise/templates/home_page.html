@@ -12,7 +12,7 @@
                 <h1 class="cover-heading"></h1>
                 <div class="row">
 
-                    {% if not has_no_profile %}
+                    {% if request.user.is_authenticated %}
                         <div class="col-lg-6">
                             <p class="lead">
                                 <a href="{% url 'dashboard' %}" class="btn btn-lg btn-secondary">Enter</a></p>

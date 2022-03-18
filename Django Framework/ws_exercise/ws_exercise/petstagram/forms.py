@@ -1,8 +1,11 @@
 from datetime import datetime
 
 from django import forms
+from django.contrib.auth import get_user_model
 
 from ws_exercise.petstagram.models import Profile, Pet, PetPhoto
+
+UserModel = get_user_model()
 
 
 class ProfileCreateForm(forms.ModelForm):

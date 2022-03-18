@@ -1,44 +1,41 @@
+from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
-
+from django.urls import reverse_lazy
+from django.views import generic as views
 from ws_exercise.petstagram.forms import ProfileCreateForm, AddPetForm, AddPhotoForm, ProfileEditForm, DeleteForm, \
     PetEditForm, PetDeleteForm, EditPhoto
 from ws_exercise.petstagram.models import Profile, PetPhoto, Pet
 
-
-def get_profile():
-    profiles = Profile.objects.all()
-    if profiles:
-        return profiles.get()
-
-    return None
+UserModel = get_user_model()
 
 
-def home(request):
-    profile = get_profile()
+class HomeView(views.TemplateView):
+    def get_template_names(self):
+        if self.request.user.is_authenticated:
+            return 'dashboard.html'
+        else:
+            return 'auth_pages/home_page.html'
 
-    if profile is None:
-        has_no_profile = True
-    else:
-        has_no_profile = False
-    context = {
-        'has_no_profile': has_no_profile,
-        'in_home': True
-    }
+    # def dispatch(self, request, *args, **kwargs):
+    #     if self.request.user.is_authenticated:
+    #         return
 
-    return render(request, 'home_page.html', context)
+    def get_context_data(self, **kwargs):
+        result = super().get_context_data(**kwargs)
+        result['in_home'] = True
 
 
 def show_dashboard(request):
-    profile = get_profile()
-    pet_photos = PetPhoto.objects.filter(tagged_pets__user=profile).distinct()
+    profile = UserModel
+    # pet_photos = PetPhoto.objects.filter(tagged_pets__user=profile).distinct()
+    #
+    # context = {
+    #
+    #     'pet_photos': pet_photos,
+    #
+    # }
 
-    context = {
-
-        'pet_photos': pet_photos,
-
-    }
-
-    return render(request, 'dashboard.html', context)
+    return render(request, 'dashboard.html')
 
 
 def show_profile(request):

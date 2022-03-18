@@ -1,10 +1,13 @@
 from datetime import datetime
 
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
 from django.db import models
 from django.utils.deconstruct import deconstructible
+
+from ws_exercise.auth_accounts.models import AppUser
 
 
 @deconstructible
@@ -16,6 +19,9 @@ class MaxSizePhoto:
         file_size = value.file.size
         if file_size > self.max_value * 1024 * 1024:
             raise ValidationError(f'The file size must not be larger than {self.max_value}')
+
+
+UserModel = get_user_model()
 
 
 # Create your models here.
@@ -61,6 +67,8 @@ class Profile(models.Model):
         blank=True,
         choices=GENDER
     )
+
+    app_user = models.OneToOneField(AppUser, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.first_name}-{self.last_name}"
