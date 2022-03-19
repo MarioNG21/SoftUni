@@ -4,8 +4,8 @@ from django.contrib import admin
 from django.urls import path, include
 
 from ws_exercise.petstagram.views import photo_like, \
-    edit_profile, delete_profile, HomeView, \
-    DashboardView, CreatePetView, EditPetView, PetPhotoDetails, AddPhotoView, DeletePetView, EditPhotoView, ProfileView
+    HomeView, \
+    DashboardView, CreatePetView, EditPetView, PetPhotoDetails, AddPhotoView, DeletePetView, EditPhotoView
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
@@ -13,11 +13,6 @@ urlpatterns = [
 
                   path('dashboard/', DashboardView.as_view(), name='dashboard'),
                   path('accounts/', include('ws_exercise.auth_accounts.urls')),
-
-                  path('profile/', ProfileView.as_view(), name='profile'),
-                  # path('profile/create/', create_profile, name='create profile'),
-                  path('profile/edit/', edit_profile, name='edit profile'),
-                  path('profile/delete/', delete_profile, name='delete profile'),
 
                   path('pet/add/', CreatePetView.as_view(), name='add pet'),
                   path('pet/edit/<int:pk>/', EditPetView.as_view(), name='edit pet'),

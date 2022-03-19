@@ -3,9 +3,9 @@ from django.contrib.auth import mixins as auth_mixins
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic as views
-from ws_exercise.petstagram.forms import ProfileCreateForm, AddPetForm, AddPhotoForm, ProfileEditForm, DeleteForm, \
+from ws_exercise.petstagram.forms import AddPetForm, AddPhotoForm, \
     PetEditForm, PetDeleteForm, EditPhoto
-from ws_exercise.petstagram.models import Profile, PetPhoto, Pet
+from ws_exercise.petstagram.models import PetPhoto, Pet
 
 UserModel = get_user_model()
 
@@ -26,24 +26,6 @@ class DashboardView(views.ListView):
     template_name = 'dashboard.html'
     model = PetPhoto
     context_object_name = 'pet_photos'
-
-
-class ProfileView(views.DetailView):
-    model = Profile
-    template_name = 'profile_details.html'
-
-    def get_context_data(self, **kwargs):
-        kwargs = super().get_context_data(**kwargs)
-        kwargs['pk'] = self.request.user.id
-        kwargs['pets'] = Pet.objects.filter(user=self.request.user)
-        kwargs['count'] = PetPhoto.objects.filter(user=self.request.user).distinct().count()
-        kwargs['likes'] = sum(x.likes for x in PetPhoto.objects.filter(user=self.request.user).distinct())
-        return kwargs
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        result = queryset.filter(pk=self.request.user.pk)
-        return result
 
 
 #
@@ -88,57 +70,6 @@ def photo_like(request, pk):
     return redirect('photo_details', photo.pk)
 
 
-def create_profile(request):
-    if request.method == "POST":
-        form = ProfileCreateForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-
-    else:
-        form = ProfileCreateForm()
-
-    context = {
-        'form': form
-    }
-
-    return render(request, 'part2/profile_create.html', context)
-
-
-def edit_profile(request):
-    profile = get_profile()
-    if request.method == "POST":
-        form = ProfileEditForm(request.POST, instance=profile)
-        if form.is_valid():
-            form.save()
-            return redirect('profile')
-
-    else:
-        form = ProfileEditForm(instance=profile)
-
-    context = {
-        'form': form
-    }
-
-    return render(request, 'part2/profile_edit.html', context)
-
-
-def delete_profile(request):
-    profile = get_profile()
-    if request.method == 'POST':
-        delete_form = DeleteForm(request.POST, instance=profile)
-        if delete_form.is_valid():
-            delete_form.save()
-            return redirect('home')
-    else:
-        delete_form = DeleteForm()
-
-    context = {
-        'delete_form': delete_form
-    }
-    return render(request, 'part2/profile_delete.html', context)
-
-
 class CreatePetView(views.CreateView, auth_mixins.LoginRequiredMixin):
     template_name = 'part2/pet_create.html'
     form_class = AddPetForm
@@ -157,7 +88,7 @@ class CreatePetView(views.CreateView, auth_mixins.LoginRequiredMixin):
 
 
 class EditPetView(views.UpdateView):
-    model = Pet
+    form_class = PetEditForm
     template_name = 'dashboard.html'
     success_url = reverse_lazy('profile')
 
@@ -166,10 +97,14 @@ class EditPetView(views.UpdateView):
             return self.success_url
         return super().get_success_url()
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(user=self.request.user)
+
 
 class DeletePetView(views.DeleteView):
     template_name = 'part2/pet_delete.html'
-    model = Pet
+    form_class = PetDeleteForm
     success_url = reverse_lazy('profile')
     context_object_name = 'pet'
 

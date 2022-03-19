@@ -29,8 +29,8 @@
                 </div>
                 <p class="mt-2">Total Images: {{ count }}</p>
                 <p class="mt-2">Total Likes: {{ likes }}</p>
-                <a href="{% url 'edit profile' %}" class="btn btn-primary">Edit</a>
-                <a href="{% url 'delete profile' %}" class="btn btn-danger">Delete</a>
+                <a href="{% url 'edit profile' profile.pk %}" class="btn btn-primary">Edit</a>
+{#                <a href="{% url 'delete profile' %}" class="btn btn-danger">Delete</a>#}
             </div>
         </div>
     </div>
