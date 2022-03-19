@@ -16,7 +16,8 @@ class ProfileCreateForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ('first_name', 'last_name', 'profile_picture')
+        fields = ['first_name', 'last_name', 'profile_picture']
+
         labels = {
             'first_name': 'First Name',
             'last_name': 'Last Name',
@@ -79,10 +80,18 @@ class DeleteForm(forms.ModelForm):
 
 class AddPetForm(forms.ModelForm):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.user = user
         for _, fields in self.fields.items():
             fields.widget.attrs['class'] = 'form-control'
+
+    def save(self, commit=True):
+        result = super().save(commit=False)
+        result.user = self.user
+        if commit:
+            result.save()
+        return result
 
     class Meta:
         model = Pet
@@ -137,10 +146,19 @@ class PetDeleteForm(forms.ModelForm):
 
 
 class AddPhotoForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.user = user
         for _, fields in self.fields.items():
             fields.widget.attrs['class'] = 'form-control'
+
+    def save(self, commit=True):
+        result = super().save(commit=False)
+        result.user = self.user
+        if commit:
+            result.save()
+
+        return result
 
     class Meta:
         model = PetPhoto
@@ -161,10 +179,16 @@ class AddPhotoForm(forms.ModelForm):
 
 
 class EditPhoto(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.user = user
+
         for _, fields in self.fields.items():
             fields.widget.attrs['class'] = 'form-control'
+
+    def save(self, commit=True):
+        result = super().save(commit=False)
+        result.user = self.user
 
     class Meta:
         model = PetPhoto

@@ -68,7 +68,7 @@ class Profile(models.Model):
         choices=GENDER
     )
 
-    app_user = models.OneToOneField(AppUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(UserModel, on_delete=models.CASCADE, primary_key=True)
 
     def __str__(self):
         return f"{self.first_name}-{self.last_name}"
@@ -92,7 +92,7 @@ class Pet(models.Model):
         choices=TYPE
     )
 
-    user = models.ForeignKey(Profile,
+    user = models.ForeignKey(UserModel,
                              on_delete=models.CASCADE)
 
     date_of_birth = models.DateField(
@@ -134,3 +134,8 @@ class PetPhoto(models.Model):
         default=0,
 
     )
+
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.CASCADE
+     )

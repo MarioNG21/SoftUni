@@ -3,28 +3,29 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from ws_exercise.petstagram.views import show_dashboard, show_profile, show_photo_details, photo_like, \
-    create_profile, edit_profile, delete_profile, add_pet, edit_pet, delete_pet, add_photo, edit_photo, HomeView
+from ws_exercise.petstagram.views import photo_like, \
+    edit_profile, delete_profile, HomeView, \
+    DashboardView, CreatePetView, EditPetView, PetPhotoDetails, AddPhotoView, DeletePetView, EditPhotoView, ProfileView
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('', HomeView.as_view(), name='home'),
 
-                  path('dashboard/', show_dashboard, name='dashboard'),
+                  path('dashboard/', DashboardView.as_view(), name='dashboard'),
                   path('accounts/', include('ws_exercise.auth_accounts.urls')),
 
-                  path('profile/', show_profile, name='profile'),
+                  path('profile/', ProfileView.as_view(), name='profile'),
                   # path('profile/create/', create_profile, name='create profile'),
                   path('profile/edit/', edit_profile, name='edit profile'),
                   path('profile/delete/', delete_profile, name='delete profile'),
 
-                  path('pet/add/', add_pet, name='add pet'),
-                  path('pet/edit/<int:pk>/', edit_pet, name='edit pet'),
-                  path('pet/delete/<int:pk>', delete_pet, name='delete pet'),
+                  path('pet/add/', CreatePetView.as_view(), name='add pet'),
+                  path('pet/edit/<int:pk>/', EditPetView.as_view(), name='edit pet'),
+                  path('pet/delete/<int:pk>', DeletePetView.as_view(), name='delete pet'),
 
-                  path('photo/add/', add_photo, name='add photo'),
-                  path('photo/edit/<int:pk>/', edit_photo, name='edit photo'),
-                  path('photo/details/<int:id>/', show_photo_details, name='photo_details'),
-                  path('photo/likes/<int:id>/', photo_like, name='like')
+                  path('photo/add/', AddPhotoView.as_view(), name='add photo'),
+                  path('photo/edit/<int:pk>/', EditPhotoView.as_view(), name='edit photo'),
+                  path('photo/details/<int:pk>/', PetPhotoDetails.as_view(), name='photo_details'),
+                  path('photo/likes/<int:pk>/', photo_like, name='like')
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

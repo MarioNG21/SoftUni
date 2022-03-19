@@ -17,7 +17,7 @@ class UserRegistrationForm(auth_forms.UserCreationForm, ProfileCreateForm):
 
     class Meta:
         model = UserModel
-        fields = ('username', 'password1', 'password2')
+        fields = ['username', 'password1', 'password2']
         labels = {
             'username': 'Enter username',
             'password1': 'Enter password',

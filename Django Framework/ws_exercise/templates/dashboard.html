@@ -27,12 +27,12 @@
                                 {% else %}
                                     <h5 class="card-title">{{ pet.name }}</h5>
                                 {% endif %}
-                            {% endfor %}
-                            <!-- First 30 chars from the description -->
-                            <p class="card-text">{{ pet.description|truncatechars:30 }}</p>
-                            <!-- Button to the Photo Details Page -->
-                            <a href="{% url 'photo_details' photo.pk %}" class="btn btn-primary">See details</a>
 
+                                <!-- First 30 chars from the description -->
+                                <p class="card-text">{{ pet.description|truncatechars:30 }}</p>
+                                <!-- Button to the Photo Details Page -->
+                                <a href="{% url 'photo_details' photo.pk %}" class="btn btn-primary">See details</a>
+                            {% endfor %}
                         </div>
                     </div>
                 {% endfor %}
