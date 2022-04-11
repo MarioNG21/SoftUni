@@ -1,0 +1,114 @@
+{% extends 'base/index.html' %}
+{% load static %}
+{% block title %}
+    Cart
+{% endblock %}
+{% block css %}
+
+    <link rel="stylesheet" href="{% static '/css/ui.css' %}">
+    <link rel="stylesheet" href="{% static '/css/bootstrap2.css' %}">
+{% endblock %}
+
+{% block content %}
+    {% if not object_list %}
+        <div class="container mx-auto alert alert-info text-center" role="alert"
+             style="max-width: 500px; margin-top: 100px;">
+            Sir/Madam, there is no products in your shopping card so that is the reason you can't see this page!
+            If you want to add some products go to our marketplace by clicking this link below!
+            <br><br>
+            <a href="{% url 'marketplace' %}">Marketplace</a>
+        </div>
+    {% else %}
+        <div class="row">
+            <aside class="col-lg-9">
+                <div class="card">
+                    <table class="table table-borderless table-shopping-cart">
+                        <thead class="text-muted">
+                        <tr class="small text-uppercase">
+                            <th scope="col">Products</th>
+                            <th scope="col" width="120">Quantity</th>
+                            <th scope="col" width="120">Price</th>
+                            <th scope="col" class="text-right" width="200"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in object_list %}
+                            <tr>
+                                <td>
+                                    <figure class="itemside align-items-center">
+                                        <div class="aside"><img src="{{ item.product.product_image.url }}"
+                                                                class="img-sm">
+                                        </div>
+                                        <figcaption class="info">
+                                            <a href="#" class="title text-dark">{{ item.product.title }}</a>
+                                            <p class="text-muted small">{{ item.product.description }}</p>
+                                        </figcaption>
+                                    </figure>
+                                </td>
+                                <td>
+                                    <!-- col.// -->
+                                    <div class="col">
+                                        <div class="input-group input-spinner">
+                                            <div class="input-group-prepend">
+                                                <a href="{% url 'remove_item_from cart' item.pk %}"
+                                                   class="btn btn-light"
+                                                   type="button" id="button-plus"><i
+                                                        class="fa fa-minus"></i></a>
+                                            </div>
+                                            <input type="text" class="form-control" value={{ item.quantity }}>
+                                            <div class="input-group-append">
+                                                <a href="{% url 'add_item_to_cart' item.pk %}" class="btn btn-light"
+                                                   type="button" id="button-minus"><i
+                                                        class="fa fa-plus"></i></a>
+                                            </div>
+                                        </div> <!-- input-group.// -->
+                                    </div> <!-- col.// -->
+                                </td>
+                                <td>
+                                    <div class="price-wrap">
+                                        <var class="price">${% widthratio item.product.price 1 item.quantity %}</var>
+                                        <small class="text-muted"> ${{ item.product.price|floatformat:2 }} each </small>
+                                    </div> <!-- price-wrap .// -->
+                                </td>
+                                <td class="text-right">
+                                    <a href="" class="btn btn-danger"> Remove</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div> <!-- card.// -->
+
+            </aside> <!-- col.// -->
+            <aside class="col-lg-3">
+
+                <div class="card">
+                    <div class="card-body">
+                        <dl class="dlist-align">
+                            <dt>Total price:</dt>
+                            <dd class="text-right">${{ total|floatformat:2 }}</dd>
+                        </dl>
+                        <dl class="dlist-align">
+                            <dt>Tax:</dt>
+                            <dd class="text-right"> ${{ tax|floatformat:2 }}</dd>
+                        </dl>
+                        <dl class="dlist-align">
+                            <dt>Total:</dt>
+                            <dd class="text-right text-dark b"><strong>${{ tax_plus_total|floatformat:2 }}</strong></dd>
+                        </dl>
+
+                        <hr>
+                        <p class="text-center mb-3">
+                            <img src="{% static '/images/payments.png' %}" height="26">
+                        </p>
+                        <a href="{% url 'checkout' %}" class="btn btn-primary btn-block"> Checkout </a>
+                        <a href="{% url 'marketplace' %}" class="btn btn-light btn-block">Continue Shopping</a>
+                    </div> <!-- card-body.// -->
+                </div> <!-- card.// -->
+
+            </aside> <!-- col.// -->
+
+
+        </div> <!-- row.// -->
+    {% endif %}
+{% endblock %}

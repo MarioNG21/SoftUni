@@ -1,0 +1,7 @@
+{# protection against cross site script injection #}
+{% autoescape off %}
+    Hi {{ user.email }}
+    Please click on below link to confirm your registration.
+    http://{{ domain }}{% url 'activation' uid=uid  token=token %}
+    If you have suspicions that this is not your profile please ignore this link !
+{% endautoescape %}

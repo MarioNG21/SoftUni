@@ -1,0 +1,23 @@
+{% extends 'base/index.html' %}
+{% load static %}
+{% block title %}
+    Delete Advertisement
+
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static '/css/forms.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="form" style="flex-direction: column;">
+        <h2 style="text-align: center;">Delete Advertisement</h2>
+        <form method="post" action="{% url 'delete advertisement' object.pk %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p style="text-align: center;">
+                Are you sure that you want to delete your advertisement ?
+            </p>
+            {{ form.as_p }}
+
+            <input type="submit" value="Delete Ad"/>
+        </form>
+    </div>
+{% endblock %}

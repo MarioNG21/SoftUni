@@ -1,0 +1,105 @@
+.form {
+    background-color: #FFC159;
+    display: flex;
+    padding: 40px;
+    width: 30%;
+    margin: 2% auto;
+    border: 2px solid black;
+    border-radius: 20px;
+    justify-content: space-around;
+}
+
+form label {
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    margin-left: 5px;
+
+}
+
+input[type=text],
+input[type=password] {
+    width: 100%;
+
+}
+
+input[type=submit] {
+    display: block;
+    width: 200px;
+    height: 60px;
+    margin: 10px auto;
+    border-radius: 6px;
+    color: #FFC159;
+    background: black;
+    font-weight: bold;
+}
+
+input[type=submit]:hover {
+    cursor: pointer;
+    color: #FFC159;
+    background: gray;
+}
+
+input[type=text],
+input[type=number],
+input[type=password],
+input[type=email],
+select,
+textarea {
+    width: 100%;
+    padding: 10px 15px;
+    margin: 5px 0;
+}
+
+.forgot-password a {
+
+    text-decoration: underline;
+    color: black;
+    display: block;
+    font-weight: 500;
+
+}
+
+/*!* all buttons when the mouse is on them *!*/
+/*input[type=submit]:hover,*/
+/*.button:hover {*/
+/*    background-color: black;*/
+/*    color: white;*/
+/*    text-decoration: none;*/
+/*}*/
+
+/*!* style of edit button *!*/
+/*input[type=edit],*/
+/*.button.edit {*/
+/*    background-color: #ffe8ba;*/
+/*    height: 22px;*/
+/*    text-align: center;*/
+/*}*/
+
+/*!* style of delete button *!*/
+/*input[type=delete],*/
+/*.button.delete {*/
+/*    background: #ffe8ba;*/
+/*    height: 22px;*/
+/*    text-align: center;*/
+/*}*/
+
+/*!* style of details button *!*/
+/*input[type=details],*/
+/*.button.details {*/
+/*    background: #ffe8ba;*/
+/*    height: 22px;*/
+/*    text-align: center;*/
+/*}*/
+
+/*!* style when the mousse is on the delete, edit and details button *!*/
+/*input[type=details]:hover,*/
+/*input[type=delete]:hover,*/
+/*input[type=edit]:hover,*/
+/*.button.details:hover,*/
+/*.button.delete:hover,*/
+/*.button.edit:hover {*/
+/*    background-color: #ffcb63;*/
+/*    text-decoration: underline;*/
+
+/*}*/

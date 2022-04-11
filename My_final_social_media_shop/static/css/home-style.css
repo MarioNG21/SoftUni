@@ -1,0 +1,127 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.banner-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner-container .banner {
+    background: linear-gradient(-55deg, #bdc3c7 29%, #2c3e50 29.1%, #2c3e50 68%, #bdc3c7 68.1%);
+    border-radius: 5px;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    box-shadow: 0 5px 10px black;
+    overflow: hidden;
+    flex-grow: 1;
+    height: 500px;
+}
+
+.banner-container .banner .shoe {
+    position: relative;
+    bottom: 183px;
+    left: -128px;
+    padding: 85px;
+    flex: 1 1 250px;
+}
+
+.banner-container .banner .shoe img {
+    width: 80%;
+
+}
+
+.banner-container .banner .content {
+    text-align: center;
+    position: relative;
+    color: #FFC141;
+    bottom: 152px;
+}
+
+.banner-container .banner .man {
+    position: relative;
+    bottom: 150px;
+    left: 191px;
+    padding: 123px;
+    flex: 1 1 250px;
+}
+
+.banner-container .banner .man img {
+    width: 100%;
+    height: auto;
+}
+
+.container-about-us-info {
+    max-width: 1000px;
+    margin: 60px auto;
+    padding: 0 12px;
+    box-sizing: inherit;
+
+}
+
+.container-about-us-info .about-site-info,
+.container-about-us-info .about-market-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4rem;
+
+}
+
+.container-about-us-info .about-site-info .info,
+.container-about-us-info .about-market-info .market-info {
+    max-width: 400px;
+
+}
+
+.container-about-us-info .about-site-info .info h2,
+.container-about-us-info .about-market-info .market-info h2 {
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.container-about-us-info .about-site-info .info p,
+.container-about-us-info .about-market-info .market-info p {
+    font-weight: 300;
+    font-size: 16px;
+}
+
+.container-about-us-info .about-site-info .photo,
+.container-about-us-info .about-market-info .market-photo {
+    max-width: 300px;
+
+}
+
+.container-about-us-info .about-site-info .photo img,
+.container-about-us-info .about-market-info .market-photo img {
+    width: 400px;
+    height: 300px;
+}
+
+.button {
+    display: block;
+    width: 100px;
+    height: 60px;
+    margin: 10px 0;
+    border-radius: 6px;
+    color: white;
+    background: #FFC159;
+    font-weight: bold;
+}
+
+.button a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+.button a:hover {
+    color: black;
+}

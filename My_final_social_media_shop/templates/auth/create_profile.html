@@ -1,0 +1,22 @@
+{% extends 'base/index.html' %}
+{% load static %}
+{% block title %}
+    Profile Create
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static '/css/forms.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="form" style="flex-direction: column;">
+        <h2 style="text-align: center;">Profile Create </h2>
+        <form method="post" action="{% url 'create profile' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <input type="submit" value="Create Profile"/>
+        </form>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base/index.html' %}
+{% load static %}
+{% block title %}
+    Profile Delete
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static '/css/forms.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="form" style="flex-direction: column;">
+        <h2 style="text-align: center;">Profile Delete </h2>
+        <form method="post" action="{% url 'delete profile' user.pk %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p>
+                Are you sure {{ user.profile.first_name|capfirst }} {{ user.profile.last_name|capfirst }} that you want to delete your
+                profile? Because all your information will be deleted, this includes your orders, your user and your posts!
+                <br>
+                If you are just press the Delete Profile Button!
+            </p>
+            {{ form.as_p }}
+
+            <input style="background-color: #E43348" type="submit" value="Delete Profile"/>
+        </form>
+    </div>
+
+{% endblock %}

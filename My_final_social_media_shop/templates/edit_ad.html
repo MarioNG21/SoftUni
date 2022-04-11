@@ -1,0 +1,20 @@
+{% extends 'base/index.html' %}
+{% load static %}
+{% block title %}
+    Edit Advertisement
+
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static '/css/forms.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="form" style="flex-direction: column;">
+        <h2 style="text-align: center;">Edit Advertisement</h2>
+        <form method="post" action="{% url 'edit advertisement' object.pk %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <input type="submit" value="Edit Ad"/>
+        </form>
+    </div>
+{% endblock %}
