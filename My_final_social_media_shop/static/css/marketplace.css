@@ -11,9 +11,6 @@ main {
 
 }
 
-
-
-
 .card {
     position: relative;
     display: flex;
@@ -72,4 +69,17 @@ main {
     color: black;
     background-color: #FFC159;
     border-color: #FFC159;
+}
+
+.card-body .btn {
+     color: black;
+    background-color: #FFC159;
+    border-color: #FFC159;
+}
+
+
+.card-body .btn:hover {
+    color:white;
+    background: black;
+    border-color: black;
 }

@@ -22,7 +22,7 @@ class OrderItemAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('user', 'ordered', 'date_created_on', 'ordered')
+    list_display = ('user', 'ordered', 'date_created_on')
     list_filter = ('user', 'date_created_on')
     list_display_links = ('user', 'date_created_on', 'ordered')
 

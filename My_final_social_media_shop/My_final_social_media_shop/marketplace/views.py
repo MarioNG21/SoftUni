@@ -1,15 +1,14 @@
 import decimal
+from datetime import datetime, date
+
 from django.contrib import messages
 from django.contrib.auth import mixins as auth_mixins
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
-
 from django.views import generic as views
-
 from django.views.generic import detail
-
 from My_final_social_media_shop.marketplace.forms import CreationAdForm, EditAdForm, DeleteAdForm, CheckOutForm, \
     PaymentForm, CategoryAddForm, CategoryEditForm, CategoryDeleteForm
 from My_final_social_media_shop.marketplace.models import Product, OrderItem, Order, Category, BillingAddress
@@ -25,9 +24,15 @@ class MarketplaceView(views.ListView):
     context_object_name = 'products'
 
     def get_queryset(self):
-        if 'slug' in self.kwargs:
+        if 'slug' in self.kwargs or 'slug' in self.request.GET:
             qs = super().get_queryset()
-            return qs.filter(category__slug__icontains=self.kwargs['slug'])
+            slug = ''
+            if 'slug' in self.kwargs:
+                slug = self.kwargs['slug']
+            elif 'slug' in self.request.GET:
+                slug = self.request.GET['slug']
+
+            return qs.filter(category__slug__icontains=slug)
 
         return super().get_queryset()
 
@@ -127,12 +132,15 @@ class AddingObjectView(auth_mixins.LoginRequiredMixin, detail.BaseDetailView):
             if order.items.filter(product_id=product.pk):
                 ordered_item.quantity += 1
                 ordered_item.save()
+                messages.info(self.request, 'This item quantity was updated plus 1!')
             else:
                 order.items.add(ordered_item)
+                messages.info(self.request, 'This item was added to your cart! ')
 
         else:
             order = Order.objects.create(user=self.request.user)
             order.items.add(ordered_item)
+            messages.info(self.request, 'New order was created successfully!')
 
         return redirect(reverse_lazy('product details', kwargs={'pk': product.pk}))
 
@@ -142,20 +150,23 @@ def remove_product_from_order(request, pk):
     order_qs = Order.objects.filter(user=request.user, ordered=False)
     if order_qs.exists():
         order = order_qs.get()
+        print(order.items.all())
         if order.items.filter(product_id=selected_product.pk):
             ordered_item = OrderItem.objects.filter(
                 product_id=pk,
                 purchased=False
             ).get()
-            messages.info(request, "This item was successfully removed from your order")
+            messages.info(request, "This item was successfully removed from your order ")
             order.items.remove(ordered_item)
+
+            return redirect(reverse_lazy('cart'))
         else:
             messages.info(request, 'This item does not exists in your cart')
-            redirect(reverse_lazy('product details', kwargs={'pk': pk}))
+            return redirect(reverse_lazy('cart'))
 
     else:
         messages.info(request, 'There is no order which has been made !')
-        return redirect(reverse_lazy('product details', kwargs={'pk': pk}))
+        return redirect(reverse_lazy('cart'))
 
 
 @login_required
@@ -163,6 +174,7 @@ def add_view(request, pk):
     order_item = OrderItem.objects.get(pk=pk)
     order_item.quantity += 1
     order_item.save()
+    messages.info(request, 'This item quantity was updated plus 1!')
     return redirect('cart')
 
 
@@ -173,9 +185,11 @@ def remove_view(request, pk):
     order_item.quantity -= 1
     if order_item.quantity <= 0:
         order_item.delete()
+        messages.info(request, 'This item was removed!')
     else:
-        order_item.save()
 
+        order_item.save()
+        messages.info(request, 'This item quantity was updated minus 1!')
     return redirect('cart')
 
 
@@ -194,6 +208,7 @@ class CheckOutView(auth_mixins.LoginRequiredMixin, views.FormView):
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
+
         return kwargs
 
     def get_context_data(self, **kwargs):
@@ -204,6 +219,7 @@ class CheckOutView(auth_mixins.LoginRequiredMixin, views.FormView):
             context['has_items'] = True
         except ObjectDoesNotExist:
             pass
+        context['has_order'] = Order.objects.filter(user=self.request.user).exists()
         return context
 
     def form_valid(self, form):
@@ -220,7 +236,7 @@ class CheckOutView(auth_mixins.LoginRequiredMixin, views.FormView):
                 state = form.cleaned_data['state']
                 phone = form.cleaned_data['phone']
 
-                billing_address = BillingAddress(
+                billing_address, created = BillingAddress.objects.get_or_create(
                     first_name=first_name,
                     last_name=last_name,
                     address=address,
@@ -231,10 +247,11 @@ class CheckOutView(auth_mixins.LoginRequiredMixin, views.FormView):
                     user=user,
 
                 )
-                billing_address.save()
+                if created:
+                    billing_address.save()
 
-                order.billing_address = billing_address
-                order.save()
+                    order.billing_address = billing_address
+                    order.save()
                 # Should redirect to payment
                 result.headers['Location'] = reverse_lazy('payment')
             except ObjectDoesNotExist:
@@ -278,6 +295,24 @@ class PaymentView(auth_mixins.LoginRequiredMixin, views.FormView):
         except ObjectDoesNotExist:
             pass
         return context
+
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        if self.request.method == 'POST':
+            order_qs = Order.objects.filter(user=form.user, ordered=False)
+            if order_qs.exists():
+                order = order_qs.get()
+                order.ordered = True
+                order.date_send_on = date.today()
+                order.save()
+                result.headers['Location'] = reverse_lazy('after-payment') + '?command=successfullypaid'
+            else:
+                result.headers['Location'] = reverse_lazy('after-payment') + '?command=unsuccessfullypaid'
+        return result
+
+
+class AfterPaymentView(views.TemplateView):
+    template_name = 'after_payment.html'
 
 
 class CategoryCreateView(views.CreateView):

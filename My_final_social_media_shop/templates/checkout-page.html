@@ -11,117 +11,124 @@
 {% endblock %}
 
 {% block content %}
-
-    <div class="row">
-        <aside class="col-lg-6">
-            <div class="card">
-                <div class="card-body">
-                    <div class="form" style="flex-direction: column; width:87%;">
-                        <h4 class="card-title mb-4" style="text-align: center;">Billing Address</h4>
-                        <form method="POST" action="{% url 'checkout' %}">
-                            {% csrf_token %}
-                            <div class="form-row">
-                                {# bootstrap  #}
-                                <div class="col form-group">
-                                    <label for="">First Name:</label>
-                                    {{ form.first_name }}
-                                </div>
-                                <div class="col form-group">
-                                    <label for="">Last Name:</label>
-                                    {{ form.last_name }}
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                {# bootstrap  #}
-                                <div class="col form-group">
-                                    <label for="">ZIP:</label>
-                                    {{ form.zip }}
-                                </div>
-                                <div class="col form-group">
-                                    <label for="" style="margin-bottom: 10px">Country:</label>
-                                    {{ form.country }}
-                                </div>
-                                <div class="col form-group">
-                                    <label for="">State:</label>
-                                    {{ form.state }}
-                                </div>
-
-                            </div>
-                            <div class="form-row">
-                                {# bootstrap  #}
-                                <div class="col form-group">
-                                    <label for="">Address:</label>
-                                    {{ form.address }}
-                                </div>
-                                <div class="col form-group">
-                                    <label for="">Phone:</label>
-                                    {{ form.phone }}
-                                </div>
-                            </div>
-                            <input type="submit" value="Place Order"/>
-                        </form>
-                    </div>
-                </div>
-
-            </div> <!-- card.// -->
-
-        </aside> <!-- col.// -->
-        {% if has_items %}
+    {% if has_order %}
+        <div class="row">
             <aside class="col-lg-6">
-
                 <div class="card">
                     <div class="card-body">
-                        <table class="table table-borderless table-shopping-cart">
-                            <thead class="text-muted">
-                            <tr class="small text-uppercase">
-                                <th scope="col">Products</th>
-                                <th scope="col" width="120">Quantity</th>
-                                <th scope="col" width="120">Price</th>
+                        <div class="form" style="flex-direction: column; width:87%;">
+                            <h4 class="card-title mb-4" style="text-align: center;">Billing Address</h4>
+                            <form method="POST" action="{% url 'checkout' %}">
+                                {% csrf_token %}
+                                <div class="form-row">
+                                    {# bootstrap  #}
+                                    <div class="col form-group">
+                                        <label for="">First Name:</label>
+                                        {{ form.first_name }}
+                                    </div>
+                                    <div class="col form-group">
+                                        <label for="">Last Name:</label>
+                                        {{ form.last_name }}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    {# bootstrap  #}
+                                    <div class="col form-group">
+                                        <label for="">ZIP:</label>
+                                        {{ form.zip }}
+                                    </div>
+                                    <div class="col form-group">
+                                        <label for="" style="margin-bottom: 10px">Country:</label>
+                                        {{ form.country }}
+                                    </div>
+                                    <div class="col form-group">
+                                        <label for="">State:</label>
+                                        {{ form.state }}
+                                    </div>
 
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for item in object_list %}
-                                <tr>
-                                    <td>
-                                        <figure class="itemside align-items-center">
-                                            <div class="aside"><img src="{{ item.product.product_image.url }}"
-                                                                    class="img-sm">
-                                            </div>
-                                            <figcaption class="info">
-                                                <a href="#" class="title text-dark">{{ item.product.title }}</a>
-                                                <p class="text-muted small">{{ item.product.description }}</p>
-                                            </figcaption>
-                                        </figure>
-                                    </td>
-                                    <td>
-                                        <!-- col.// -->
-                                        <div class="col">
-                                            <div class="input-group input-spinner">
-                                                <input type="text" class="form-control" value={{ item.quantity }}>
-                                            </div> <!-- input-group.// -->
-                                        </div> <!-- col.// -->
-                                    </td>
-                                    <td>
-                                        <div class="price-wrap">
-                                            <var class="price">${% widthratio item.product.price 1 item.quantity %}</var>
-                                            <small class="text-muted"> ${{ item.product.price|floatformat:2 }}
-                                                each </small>
-                                        </div> <!-- price-wrap .// -->
-                                    </td>
+                                </div>
+                                <div class="form-row">
+                                    {# bootstrap  #}
+                                    <div class="col form-group">
+                                        <label for="">Address:</label>
+                                        {{ form.address }}
+                                    </div>
+                                    <div class="col form-group">
+                                        <label for="">Phone:</label>
+                                        {{ form.phone }}
+                                    </div>
+                                </div>
+                                <input type="submit" value="Place Order"/>
+                            </form>
+                        </div>
+                    </div>
+
+                </div> <!-- card.// -->
+
+            </aside> <!-- col.// -->
+            {% if has_items %}
+                <aside class="col-lg-6">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table table-borderless table-shopping-cart">
+                                <thead class="text-muted">
+                                <tr class="small text-uppercase">
+                                    <th scope="col">Products</th>
+                                    <th scope="col" width="120">Quantity</th>
+                                    <th scope="col" width="120">Price</th>
 
                                 </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                {% for item in object_list %}
+                                    <tr>
+                                        <td>
+                                            <figure class="itemside align-items-center">
+                                                <div class="aside"><img src="{{ item.product.product_image.url }}"
+                                                                        class="img-sm">
+                                                </div>
+                                                <figcaption class="info">
+                                                    <a href="#" class="title text-dark">{{ item.product.title }}</a>
+                                                    <p class="text-muted small">{{ item.product.description }}</p>
+                                                </figcaption>
+                                            </figure>
+                                        </td>
+                                        <td>
+                                            <!-- col.// -->
+                                            <div class="col">
+                                                <div class="input-group input-spinner">
+                                                    <input type="text" class="form-control" value={{ item.quantity }}>
+                                                </div> <!-- input-group.// -->
+                                            </div> <!-- col.// -->
+                                        </td>
+                                        <td>
+                                            <div class="price-wrap">
+                                                <var class="price">${% widthratio item.product.price 1 item.quantity %}</var>
+                                                <small class="text-muted"> ${{ item.product.price|floatformat:2 }}
+                                                    each </small>
+                                            </div> <!-- price-wrap .// -->
+                                        </td>
 
-                        <a href="{% url 'marketplace' %}" class="btn btn-light btn-block">Continue Shopping</a>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                            <a href="{% url 'marketplace' %}" class="btn btn-light btn-block">Continue Shopping</a>
+                        </div>
                     </div>
-                </div>
 
-            </aside>
-        {% endif %}
+                </aside>
+            {% endif %}
 
-    </div> <!-- row.// -->
-
+        </div> <!-- row.// -->
+    {% else %}
+        <div class="container mx-auto alert alert-info text-center" role="alert"
+             style="max-width: 300px; margin-top: 100px;">
+            You must have made an order so you can use this page! GO to marketplace and add a item in your cart
+            <br><br>
+            <a href="{% url 'marketplace' %}">Shopping</a>
+        </div>
+    {% endif %}
 {% endblock %}

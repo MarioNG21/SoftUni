@@ -7,6 +7,8 @@
     {% endblock %}
     </title>
     <link rel="stylesheet" href={% static '/css/style.css' %}>
+
+
     {% block css %}
 
     {% endblock %}
@@ -28,8 +30,8 @@
 
         </span>
         <form class="searchbar" method="get" action="{% url 'marketplace' %}">
-            <input type="search">
-            <button>Search<i class="fa fa-search"></i></button>
+            <input type="search" name="slug" style="padding: 5px">
+            <button>Search</button>
         </form>
 
         <ul class="navigation-list">
@@ -67,6 +69,9 @@
                     </div>
                 </li>
                 <li class="nav-item-with-user">
+                    <a class="add-ad" href="{% url 'marketplace' %}">Market</a>
+                </li>
+                <li class="nav-item-with-user">
                     <a class="add-ad" href="{% url 'add advertisement' %}">Add an Advertisement</a>
                 </li>
                 <li class="nav-item-with-user">
@@ -90,7 +95,7 @@
 </main>
 <footer class="page-footer text-center font-small mt-4 wow fadeIn">
     <div class="footer-copyright py-3">
-        © 2019 Copyright:
+        © 2022 Copyright:
         <a href="#" target="_blank"> Mario Georgiev </a>
     </div>
 </footer>

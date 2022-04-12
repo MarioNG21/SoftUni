@@ -1,0 +1,30 @@
+{% extends 'base/index.html' %}
+{% load static %}
+{% block title %}
+    After Payment
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static '/css/forms.css' %}">
+
+{% endblock %}
+{% block content %}
+    {% if request.GET.command == 'successfullypaid' %}
+        <div class="container mx-auto alert alert-info text-center" role="alert"
+             style="max-width: 300px; margin-top: 100px;">
+            Your order was successfully placed and soon will be sent for delivery. It will come in period of 5 working
+            days!
+            If you want to continue shopping just click the link below
+            <br><br>
+            <a href="{% url 'marketplace' %}">Continue Shopping</a>
+        </div>
+    {% elif request.GET.command == 'unsuccessfullypaid' %}
+        <div class="container mx-auto alert alert-info text-center" role="alert"
+             style="max-width: 300px; margin-top: 100px;">
+            It looks like there is a problem with our system please try again later, we will check your account if
+            everything is alright! We apologize for this problem
+            <br><br>
+            <a href="{% url 'index' %}">Homepage</a>
+        </div>
+
+    {% endif %}
+{% endblock %}

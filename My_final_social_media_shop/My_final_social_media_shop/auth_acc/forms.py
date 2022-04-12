@@ -26,7 +26,8 @@ class CreationUser(auth_forms.UserCreationForm):
         widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter your age here'})
         , validators=(age_validate,))
     gender = forms.ChoiceField(
-        choices=Profile.CHOICES
+        choices=Profile.CHOICES,
+
     )
 
     def save(self, commit=True):
@@ -126,4 +127,3 @@ class ProfileUpdateForm(forms.ModelForm):
             'phone': forms.TextInput(attrs={'placeholder': 'Enter your phone number if you want to have one'}),
 
         }
-
