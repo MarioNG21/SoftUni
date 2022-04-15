@@ -72,14 +72,33 @@ main {
 }
 
 .card-body .btn {
-     color: black;
+    color: black;
     background-color: #FFC159;
     border-color: #FFC159;
 }
 
 
 .card-body .btn:hover {
-    color:white;
+    color: white;
     background: black;
     border-color: black;
+}
+
+.pag {
+    display: flex;
+    justify-content: center;
+
+}
+
+.pag a {
+    color: black;
+    border-color: #FFC159;
+    background-color: #FFC159;
+    margin:2px;
+}
+
+.pag a:hover {
+    background-color: #FFC141;
+    border-color: #FFC141;
+
 }

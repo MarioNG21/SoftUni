@@ -10,7 +10,23 @@ body {
     font-size: 20px;
     font-family: Lato, sans-serif;
 }
+@media (max-width: 640px) {
+  .upper-part-page {
+    text-align: center;
+  }
 
+  .navigation {
+    flex-direction: column;
+  }
+
+  .navigation ul {
+    flex-direction: column;
+  }
+
+  .navigation li {
+    margin: 0.8em 0;
+  }
+}
 .navigation {
     display: flex;
     flex-direction: row;

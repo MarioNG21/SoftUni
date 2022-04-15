@@ -22,6 +22,7 @@ class MarketplaceView(views.ListView):
     model = Product
     template_name = 'marketplace.html'
     context_object_name = 'products'
+    paginate_by = 3
 
     def get_queryset(self):
         if 'slug' in self.kwargs or 'slug' in self.request.GET:
@@ -96,6 +97,10 @@ class CartView(auth_mixins.LoginRequiredMixin, views.ListView):
     context_object_name = 'order_items'
     ordering = '-id'
 
+    def get_queryset(self):
+        result = super().get_queryset().filter(user=self.request.user)
+        return result
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         total = 0
@@ -105,12 +110,12 @@ class CartView(auth_mixins.LoginRequiredMixin, views.ListView):
             qnt += item.quantity
             total += (item.product.price * item.quantity)
 
-        tax = total * decimal.Decimal(
-            0.02)  # because price is decimal-field and 0.02 is float : float approximately value and decimal store fix values
-        context['total'] = total
-        context['qnt'] = qnt
-        context['tax'] = tax
-        context['tax_plus_total'] = tax + total
+            tax = total * decimal.Decimal(
+                0.02)  # because price is decimal-field and 0.02 is float : float approximately value and decimal store fix values
+            context['total'] = total
+            context['qnt'] = qnt
+            context['tax'] = tax
+            context['tax_plus_total'] = tax + total
         return context
 
 
@@ -120,9 +125,10 @@ class AddingObjectView(auth_mixins.LoginRequiredMixin, detail.BaseDetailView):
         product = Product.objects.get(id=pk)
         ordered_item, created = OrderItem.objects.get_or_create(
             product=product,
-            purchased=False,
+
             user=self.request.user
         )
+
         order_qs = Order.objects.filter(
             user=self.request.user,
             ordered=False
@@ -145,19 +151,23 @@ class AddingObjectView(auth_mixins.LoginRequiredMixin, detail.BaseDetailView):
         return redirect(reverse_lazy('product details', kwargs={'pk': product.pk}))
 
 
+@login_required
 def remove_product_from_order(request, pk):
     selected_product = Product.objects.filter(pk=pk).get()
     order_qs = Order.objects.filter(user=request.user, ordered=False)
     if order_qs.exists():
         order = order_qs.get()
-        print(order.items.all())
         if order.items.filter(product_id=selected_product.pk):
             ordered_item = OrderItem.objects.filter(
                 product_id=pk,
-                purchased=False
+
             ).get()
             messages.info(request, "This item was successfully removed from your order ")
             order.items.remove(ordered_item)
+            OrderItem.objects.filter(
+                product_id=pk,
+
+            ).delete()
 
             return redirect(reverse_lazy('cart'))
         else:
@@ -191,13 +201,6 @@ def remove_view(request, pk):
         order_item.save()
         messages.info(request, 'This item quantity was updated minus 1!')
     return redirect('cart')
-
-
-'''
-todo:
- --- payment logic + remove object turn into cbv ---
- --- Category Add, edit, delete 
-'''
 
 
 class CheckOutView(auth_mixins.LoginRequiredMixin, views.FormView):
@@ -248,6 +251,9 @@ class CheckOutView(auth_mixins.LoginRequiredMixin, views.FormView):
 
                 )
                 if created:
+                    billing_qs = BillingAddress.objects.filter(user=user)
+                    if billing_qs.exists():
+                        BillingAddress.objects.filter(user=user).delete()
                     billing_address.save()
 
                     order.billing_address = billing_address
@@ -255,6 +261,7 @@ class CheckOutView(auth_mixins.LoginRequiredMixin, views.FormView):
                 # Should redirect to payment
                 result.headers['Location'] = reverse_lazy('payment')
             except ObjectDoesNotExist:
+                messages.info(self.request, 'There is problem with your billing address, check it again')
                 result.headers['Location'] = reverse_lazy('checkout')
 
         return result
@@ -275,8 +282,8 @@ class PaymentView(auth_mixins.LoginRequiredMixin, views.FormView):
         try:
             user = context['form'].user
             order_items_user = OrderItem.objects.filter(user=user)
-
-            billing_address = user.billingaddress_set.filter(user=user).get()
+            billing_qs = user.billingaddress_set.filter(user=user)
+            billing_address = billing_qs.last()
             context['billing_address'] = billing_address
             context['object_list'] = order_items_user
             total = 0
@@ -305,6 +312,8 @@ class PaymentView(auth_mixins.LoginRequiredMixin, views.FormView):
                 order.ordered = True
                 order.date_send_on = date.today()
                 order.save()
+                order_items = OrderItem.objects.filter(user=form.user).delete()
+
                 result.headers['Location'] = reverse_lazy('after-payment') + '?command=successfullypaid'
             else:
                 result.headers['Location'] = reverse_lazy('after-payment') + '?command=unsuccessfullypaid'

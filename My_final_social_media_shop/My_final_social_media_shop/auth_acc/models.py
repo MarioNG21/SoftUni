@@ -2,14 +2,15 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.contrib.auth import models as auth_models
 from My_final_social_media_shop.auth_acc.manager import AppUserManager
-from My_final_social_media_shop.auth_acc.validators import age_validate
+from My_final_social_media_shop.auth_acc.validators import age_validate, gmail_validator
 
 
 class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
     email = models.EmailField(
         null=False,
         blank=False,
-        unique=True
+        unique=True,
+        validators=(gmail_validator,)
     )
 
     is_staff = models.BooleanField(default=False)

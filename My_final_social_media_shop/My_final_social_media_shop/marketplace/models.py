@@ -149,9 +149,6 @@ class OrderItem(models.Model):
 
     quantity = models.IntegerField(default=1)
 
-    purchased = models.BooleanField(
-        default=False
-    )
     user = models.ForeignKey(
         UserModel,
         on_delete=models.CASCADE

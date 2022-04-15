@@ -6,7 +6,7 @@ from django.contrib.auth import forms as auth_forms
 from django.core.exceptions import ValidationError
 
 from My_final_social_media_shop.auth_acc.models import Profile
-from My_final_social_media_shop.auth_acc.validators import age_validate
+from My_final_social_media_shop.auth_acc.validators import age_validate, gmail_validator
 
 UserModel = get_user_model()
 
@@ -64,7 +64,7 @@ class UserChangePasswordForm(auth_forms.PasswordChangeForm):
 
 
 class ForgotPasswordForm(forms.Form):
-    email = forms.EmailField()
+    email = forms.EmailField(validators=(gmail_validator,))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
